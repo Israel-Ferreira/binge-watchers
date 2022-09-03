@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  postgres-series-db:
+    container_name: series-db
+    image: postgres:latest
+    ports:
+      - 25432:5432
+
+
+    environment:
+      - POSTGRES_DB=binge-watchers
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
