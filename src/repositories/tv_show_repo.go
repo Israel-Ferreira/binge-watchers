@@ -26,7 +26,7 @@ func (tvsr TvShowRepo) FindById(id uint64) (*models.TvShow, error) {
 	defer db.Close()
 
 	query, err := db.Query(
-		`select tvs.* from tv_shows where tvs.id = $1`,
+		`select tvs.* from tv_shows tvs where tvs.id = $1`,
 		id,
 	)
 
@@ -36,7 +36,7 @@ func (tvsr TvShowRepo) FindById(id uint64) (*models.TvShow, error) {
 
 	defer query.Close()
 
-	var serie *models.TvShow
+	var serie models.TvShow
 
 	if query.Next() {
 		if err := query.Scan(&serie.ID, &serie.Title, &serie.Category, &serie.IsFinished, &serie.LaunchYear); err != nil {
@@ -44,7 +44,7 @@ func (tvsr TvShowRepo) FindById(id uint64) (*models.TvShow, error) {
 		}
 	}
 
-	return serie, nil
+	return &serie, nil
 }
 
 func (tvsr TvShowRepo) FindAll() ([]models.TvShow, error) {

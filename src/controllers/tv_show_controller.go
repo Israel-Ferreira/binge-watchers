@@ -65,8 +65,26 @@ func (tvsc *TvShowController) Create(rw http.ResponseWriter, r *http.Request) {
 
 }
 
+func (tvsc *TvShowController) DeleteById(rw http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "serieId")
+
+	intId, err := strconv.ParseUint(id, 10, 64)
+
+	if err != nil {
+		SendErrorResp(rw, err, http.StatusBadRequest)
+		return
+	}
+
+	if err := tvsc.service.DeleteById(intId); err != nil {
+		SendErrorResp(rw, err, http.StatusInternalServerError)
+		return
+	}
+
+	rw.WriteHeader(http.StatusNoContent)
+}
+
 func (tvsc *TvShowController) FindById(rw http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
+	id := chi.URLParam(r, "serieId")
 
 	intId, err := strconv.ParseUint(id, 10, 64)
 
@@ -78,7 +96,7 @@ func (tvsc *TvShowController) FindById(rw http.ResponseWriter, r *http.Request) 
 	serie, err := tvsc.service.FindById(intId)
 
 	if err != nil {
-		rw.WriteHeader(http.StatusNotFound)
+		SendErrorResp(rw, err, http.StatusNotFound)
 		return
 	}
 

@@ -33,6 +33,6 @@ func CreateTvShowRouter(router *chi.Mux, controller controllers.TvShowController
 
 		r.Put("/{serieId}", func(w http.ResponseWriter, r *http.Request) {})
 
-		r.Delete("/{serieId}", func(w http.ResponseWriter, r *http.Request) {})
+		r.Delete("/{serieId}", controller.DeleteById)
 	})
 }
